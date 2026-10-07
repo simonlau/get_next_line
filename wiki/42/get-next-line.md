@@ -26,3 +26,8 @@ Requires a single static variable and simultaneous state for multiple file descr
 - A root `README.md` is required, opening with an italicized attribution line naming the authors logins, followed by Description, Instructions, and Resources sections (the latter documenting AI usage by task and part), plus a detailed justification of the chosen algorithm. English is recommended.
 - Common rules: C with the Norm, no crashes, no leaks, a Makefile with `$(NAME)`, `all`, `clean`, `fclean`, `re` (and `bonus` when applicable), work submitted to the assigned Git repo, Deepthought grading after peer evaluation.
 - Defense tips: buffer size and line size vary widely, and file descriptors are not only regular files. Evaluation may include a small live modification to verify understanding. Version covered here: 14.3.
+
+## See Also
+
+- [Static variables in C](../c/static-variables.md)
+- [Defining C macros at compile time with -D](../c/compile-time-define-flag.md)

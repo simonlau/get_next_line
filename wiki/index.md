@@ -15,3 +15,4 @@ C language and toolchain notes.
 | Article | Summary | Updated |
 |---------|---------|---------|
 | [Defining C macros at compile time with -D](c/compile-time-define-flag.md) | How gcc -D predefines macros per translation unit without editing sources | 2026-10-07 |
+| [Static variables in C](c/static-variables.md) | Lifetime, storage, and linkage of static locals and globals | 2026-10-07 |
