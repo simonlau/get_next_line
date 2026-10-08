@@ -12,3 +12,11 @@
 - Disposition: New
 - Raw: raw/c/2025-07-23-static-variables-in-c.md
 - Updated: get_next_line (See Also cross-links)
+
+## [2026-10-07] ingest | TST testing framework
+- Disposition: New
+- Raw: raw/c/tst-simple-c-testing-framework.md
+
+## [2026-10-07] ingest | read syscall, open syscall
+- Disposition: New; New
+- Raw: raw/c/read-2-man-page.md; raw/c/open-2-man-page.md
