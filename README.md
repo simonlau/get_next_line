@@ -22,6 +22,8 @@ cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c
 
 To exercise the function, write a small test program that opens a file (or uses standard input) and calls `get_next_line()` in a loop until it returns `NULL`, freeing each returned line.
 
+Ready-made test drivers live in `tests/` and use the vendored single-header framework `tests/tst.h` (TST by Remo Dentato, MIT, v0.7.3-rc): run `make test` for the mandatory part or `make test_bonus` for the bonus part (both honor `make BUFFER_SIZE=n test`). Unimplemented cases report as SKIP until filled in. `make fclean` removes the built test binaries.
+
 Bonus files, when implemented, carry the `_bonus.[c/h]` suffix: `get_next_line_bonus.c`, `get_next_line_bonus.h`, `get_next_line_utils_bonus.c`.
 
 ## Algorithm
