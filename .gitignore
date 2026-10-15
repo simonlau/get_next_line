@@ -1,4 +1,5 @@
 tests/tst.h
+tests/get_next_line_test
 *.gcno
 *.gcda
 
