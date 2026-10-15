@@ -1,7 +1,8 @@
 NAME		= get_next_line.a
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -MMD -MP
+SANFLAGS	= -fsanitize=address,undefined -fno-omit-frame-pointer -g
 AR		= ar rcs
 RM		= rm -f
 
@@ -31,19 +32,21 @@ bonus: $(BONUS_OBJS)
 %.o: %.c
 	$(CC) $(CFLAGS) $(BUFFER_FLAG) -c $< -o $@
 
+-include $(OBJS:.o=.d)
+
 download_tst:
 	curl -o $(TEST_DIR)/tst.h $(TST_URL)
 
 test:
-	$(CC) $(CFLAGS) -Wno-unused-parameter $(BUFFER_FLAG) $(SRCS) $(TEST_DIR)/get_next_line_test.c -o $(TEST_BIN)
+	$(CC) $(CFLAGS) $(SANFLAGS) -Wno-unused-parameter $(BUFFER_FLAG) $(SRCS) $(TEST_DIR)/get_next_line_test.c -o $(TEST_BIN)
 	./$(TEST_BIN)
 
 test_bonus:
-	$(CC) $(CFLAGS) -Wno-unused-parameter $(BUFFER_FLAG) $(BONUS_SRCS) $(TEST_DIR)/get_next_line_bonus_test.c -o $(BONUS_TEST_BIN)
+	$(CC) $(CFLAGS) $(SANFLAGS) -Wno-unused-parameter $(BUFFER_FLAG) $(BONUS_SRCS) $(TEST_DIR)/get_next_line_bonus_test.c -o $(BONUS_TEST_BIN)
 	./$(BONUS_TEST_BIN)
 
 clean:
-	$(RM) $(OBJS) $(BONUS_OBJS)
+	$(RM) $(OBJS) $(BONUS_OBJS) $(OBJS:.o=.d) $(OBJS:.o=.a)
 
 fclean: clean
 	$(RM) $(NAME) $(TEST_BIN) $(BONUS_TEST_BIN)
