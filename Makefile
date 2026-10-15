@@ -16,7 +16,7 @@ OBJS		= $(SRCS:.c=.o)
 BONUS_SRCS	= get_next_line_bonus.c get_next_line_utils_bonus.c
 BONUS_OBJS	= $(BONUS_SRCS:.c=.o)
 
-TST_URL		= https://raw.githubusercontent.com/rdentato/tst/main/src/tst.h
+TST_URL		= https://github.com/rdentato/tst.git
 TEST_DIR	= tests
 TEST_BIN	= $(TEST_DIR)/get_next_line_test
 BONUS_TEST_BIN	= $(TEST_DIR)/get_next_line_bonus_test
@@ -35,7 +35,9 @@ bonus: $(BONUS_OBJS)
 -include $(OBJS:.o=.d)
 
 download_tst:
-	curl -o $(TEST_DIR)/tst.h $(TST_URL)
+	git clone --depth 1 $(TST_URL)
+	cp tst/src/tst.h $(TEST_DIR)/tst.h
+	rm -rf tst
 
 test:
 	$(CC) $(CFLAGS) $(SANFLAGS) -Wno-unused-parameter $(BUFFER_FLAG) $(SRCS) $(TEST_DIR)/get_next_line_test.c -o $(TEST_BIN)
