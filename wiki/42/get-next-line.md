@@ -31,3 +31,5 @@ Requires a single static variable and simultaneous state for multiple file descr
 
 - [Static variables in C](../c/static-variables.md)
 - [Defining C macros at compile time with -D](../c/compile-time-define-flag.md)
+- [String and memory functions](../c/libc-string-memory.md)
+- [Libft](libft.md)
