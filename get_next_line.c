@@ -6,96 +6,105 @@
 /*   By: simon.lau <simon.lau@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/07 21:05:45 by simon.lau         #+#    #+#             */
-/*   Updated: 2026/10/15 12:00:00 by simon.lau        ###   ########.fr       */
+/*   Updated: 2026/10/15 14:02:02 by simon.lau        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*gnl_append(char *stash, char *buf)
+static char	*append_to_stash(char *stash, char *buf)
 {
 	char	*tmp;
 
-	tmp = gnl_strjoin(stash, buf);
+	tmp = ft_strjoin(stash, buf);
 	free(stash);
 	return (tmp);
 }
 
-static char	*gnl_refill(int fd, char *stash)
+static char	*refill_stash_from_fd(char *buf, int fd, char *stash)
 {
-	char	*buf;
 	ssize_t	bytes;
 
-	buf = malloc((size_t)BUFFER_SIZE + 1);
-	if (buf == NULL)
-	{
-		free(stash);
-		return (NULL);
-	}
-	while (gnl_strchr(stash, '\n') == NULL)
+	while (ft_strchr(stash, SEP_CHAR) == NULL)
 	{
 		bytes = read(fd, buf, BUFFER_SIZE);
 		if (bytes < 0)
-			return (free(buf), free(stash), NULL);
+		{
+			free(buf);
+			free(stash);
+			return (NULL);
+		}
 		if (bytes == 0)
 			break ;
-		buf[bytes] = '\0';
-		stash = gnl_append(stash, buf);
+		buf[bytes] = NULL_CHAR;
+		stash = append_to_stash(stash, buf);
 		if (stash == NULL)
 			break ;
 	}
-	return (free(buf), stash);
+	free(buf);
+	return (stash);
 }
 
-static char	*gnl_final(char **stash)
+static char	*prepare_final_line(char **stash)
 {
 	char	*line;
 
-	if (**stash == '\0')
+	if (**stash == NULL_CHAR)
 	{
 		free(*stash);
 		*stash = NULL;
 		return (NULL);
 	}
-	line = gnl_strdup(*stash);
+	line = ft_strdup(*stash);
 	free(*stash);
 	*stash = NULL;
 	return (line);
 }
 
-static char	*gnl_drain(char **stash)
+static char	*extract_line_from_stash(char **stash)
 {
-	char	*nl;
+	char	*sep_ptr;
 	char	*line;
-	char	*rest;
+	char	*rest_of_buffer;
 
 	if (stash == NULL || *stash == NULL)
 		return (NULL);
-	nl = gnl_strchr(*stash, '\n');
-	if (nl == NULL)
-		return (gnl_final(stash));
-	line = gnl_substr(*stash, 0, (size_t)(nl - *stash + 1));
-	rest = gnl_strdup(nl + 1);
+	sep_ptr = ft_strchr(*stash, SEP_CHAR);
+	if (sep_ptr == NULL)
+		return (prepare_final_line(stash));
+	line = ft_substr(*stash, 0, sep_ptr - *stash + SEP_CHAR_ALLOC);
+	rest_of_buffer = ft_strdup(SEP_CHAR_ALLOC + sep_ptr);
 	free(*stash);
-	*stash = rest;
-	if (*stash != NULL && **stash == '\0')
+	*stash = rest_of_buffer;
+	if (*stash != NULL && **stash == NULL_CHAR)
 	{
 		free(*stash);
 		*stash = NULL;
 	}
 	if (line == NULL)
-		return (free(*stash), *stash = NULL, NULL);
+	{
+		free(*stash);
+		*stash = NULL;
+		return (NULL);
+	}
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*stash;
+	char		*buf;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stash = gnl_refill(fd, stash);
+	buf = malloc((size_t)BUFFER_SIZE + NULL_CHAR_ALLOC);
+	if (buf == NULL)
+	{
+		free(stash);
+		return (NULL);
+	}
+	stash = refill_stash_from_fd(buf, fd, stash);
 	if (stash == NULL)
 		return (NULL);
-	return (gnl_drain(&stash));
+	return (extract_line_from_stash(&stash));
 }

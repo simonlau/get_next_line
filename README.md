@@ -28,7 +28,7 @@ Bonus files, when implemented, carry the `_bonus.[c/h]` suffix: `get_next_line_b
 
 ## Algorithm
 
-Static `stash` (`char *`) holds unreturned data between calls (see `docs/GLOSSARY.md`: line / stash / refill / drain). Each call refills: `read(fd, buf, BUFFER_SIZE)` into a heap buffer (`malloc(BUFFER_SIZE+1)`, so `BUFFER_SIZE=10000000` never touches the stack), `gnl_strjoin` onto the stash until `\n` is found (`gnl_strchr`) or `read` hits `0`/`-1`. Then drains one line: `gnl_substr` for the line plus `gnl_strdup` for the remainder; empty remainder is freed so EOF returns `NULL`. Read errors free the stash and return `NULL`. Helpers are libft-adapted (`strlen/strchr/strdup/substr/strjoin`, see `docs/adr/0001-adapt-libft-instead-of-linking.md`) to keep only `read/malloc/free` as externals. Mandatory tracks a single fd; multi-fd is bonus scope.
+Static `stash` (`char *`) holds unreturned data between calls (see `docs/GLOSSARY.md`: line / stash / refill / drain). Each call refills: `read(fd, buf, BUFFER_SIZE)` into a heap buffer (`malloc(BUFFER_SIZE+1)`, so `BUFFER_SIZE=10000000` never touches the stack), `ft_strjoin` onto the stash until `\n` is found (`ft_strchr`) or `read` hits `0`/`-1`. Then drains one line: `ft_substr` for the line plus `ft_strdup` for the remainder; empty remainder is freed so EOF returns `NULL`. Read errors free the stash and return `NULL`. Helpers are libft-adapted (`strlen/strchr/strdup/substr/strjoin`, see `docs/adr/0001-adapt-libft-instead-of-linking.md`) to keep only `read/malloc/free` as externals. Mandatory tracks a single fd; multi-fd is bonus scope.
 
 ## Resources
 
